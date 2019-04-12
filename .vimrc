@@ -2,6 +2,7 @@ set number
 set noswapfile
 set cursorline
 set hlsearch
+set hidden
 
 " indent options
 set tabstop=4
@@ -20,6 +21,12 @@ inoremap jk <esc>
 let mapleader = "\<Space>"
 nnoremap <Leader>q :q<CR>
 nnoremap <Leader>w :w<CR>
+nnoremap <Leader>- :split<CR>
+nnoremap <Leader>\ :vsplit<CR>
+nnoremap <Leader>h <C-w>h
+nnoremap <Leader>j <C-w>j
+nnoremap <Leader>k <C-w>k
+nnoremap <Leader>l <C-w>l
 inoremap <C-f> <right>
 nnoremap <esc><esc> :noh<CR>
 
@@ -38,17 +45,37 @@ Plug 'scrooloose/nerdtree'
 Plug 'cespare/vim-toml'
 Plug 'plasticboy/vim-markdown'
 Plug 'rust-lang/rust.vim'
+Plug 'racer-rust/vim-racer'
 Plug 'w0rp/ale'
+Plug 'thinca/vim-quickrun'
 Plug 'majutsushi/tagbar'
 Plug 'terryma/vim-expand-region'
 Plug 'cohama/lexima.vim'
+Plug 'simeji/winresizer'
 Plug 'w0ng/vim-hybrid'
 call plug#end()
 
 " for rust-lang
 let g:rustfmt_autosave = 1
+let g:rustfmt_command = "$HOME/.cargo/bin/rustfmt"
 autocmd BufRead *.rs :setlocal tags=./rusty-tags.vi;/,$RUST_SRC_PATH/rusty-tags.vi
 autocmd BufWritePost *.rs :silent! exec "!rusty-tags vi --quiet --start-dir=" . expand('%:p:h') . "&" | redraw!
+let g:racer_experimental_completer = 1
+au FileType rust nmap gd <Plug>(rust-def)
+au FileType rust nmap gs <Plug>(rust-def-split)
+au FileType rust nmap gx <Plug>(rust-def-vertical)
+au FileType rust nmap <leader>gd <Plug>(rust-doc)
+" autocmd BufRead,BufNewFile *.rs setf rust
+autocmd BufNewFile,BufRead *.rs  let g:quickrun_config = {'rust': {'exec' : 'cat input.txt | cargo run', 'runner': 'job'}}
+" for 'w0rp/ale'
+let g:ale_rust_cargo_check_tests = 1
+let g:ale_rust_cargo_check_examples = 1
+let g:ale_echo_cursor = 0
+let g:ale_set_quickfix = 1
+let g:ale_open_list = 1
+let g:ale_keep_list_window_open = 1
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-j> <Plug>(ale_next_wrap)
 " for 'plasticboy/vim-markdown'
 let g:vim_markdown_folding_disabled = 1
 " for 'scrooloose/nerdtree'

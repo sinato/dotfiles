@@ -47,3 +47,4 @@ PATH=$PATH:$HOME/.cargo/bin
 export RUST_SRC_PATH=$(rustc --print sysroot)/lib/rustlib/src/rust/src/
 
 # source ~/venv/bin/activate
+export DISPLAY=localhost:0.0
